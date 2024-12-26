@@ -1,0 +1,108 @@
+#include <stdio.h>
+
+#define MAX_STUDENTS 100
+
+// Structure to store student details
+struct Student {
+    int id;
+    char name[50];
+    float grade;
+};
+
+// Function to input student details
+void inputStudentDetails(struct Student *student) {
+    printf("Enter student ID: ");
+    scanf("%d", &student->id);
+    
+    printf("Enter student name: ");
+    scanf(" %[^\n]s", student->name); // To read strings with spaces
+    
+    printf("Enter student grade: ");
+    scanf("%f", &student->grade);
+}
+
+// Function to display student details
+void displayStudentDetails(struct Student student) {
+    printf("\nStudent ID: %d\n", student.id);
+    printf("Student Name: %s\n", student.name);
+    printf("Student Grade: %.2f\n", student.grade);
+}
+
+// Function to input multiple student details
+void inputMultipleStudents(struct Student students[], int *count) {
+    int n;
+    printf("Enter the number of students: ");
+    scanf("%d", &n);
+    *count = n;
+
+    for (int i = 0; i < n; i++) {
+        printf("\nEnter details for student %d:\n", i + 1);
+        inputStudentDetails(&students[i]);
+    }
+}
+
+// Function to display all student details
+void displayAllStudents(struct Student students[], int count) {
+    printf("\nStudent Information:\n");
+    for (int i = 0; i < count; i++) {
+        displayStudentDetails(students[i]);
+        printf("---------------------------\n");
+    }
+}
+
+// Function to find the highest grade
+void findHighestGrade(struct Student students[], int count) {
+    if (count == 0) {
+        printf("No students available.\n");
+        return;
+    }
+
+    float highestGrade = students[0].grade;
+    struct Student topStudent = students[0];
+
+    for (int i = 1; i < count; i++) {
+        if (students[i].grade > highestGrade) {
+            highestGrade = students[i].grade;
+            topStudent = students[i];
+        }
+    }
+
+    printf("\nTop student:\n");
+    displayStudentDetails(topStudent);
+}
+
+// Main function
+int main() {
+    struct Student students[MAX_STUDENTS];
+    int studentCount = 0;
+    int choice;
+
+    while (1) {
+        printf("\nStudent Grade Management System\n");
+        printf("1. Input student details\n");
+        printf("2. Display all students\n");
+        printf("3. Find top student\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                inputMultipleStudents(students, &studentCount);
+                break;
+            case 2:
+                displayAllStudents(students, studentCount);
+                break;
+            case 3:
+                findHighestGrade(students, studentCount);
+                break;
+            case 4:
+                printf("Exiting program...\n");
+                return 0;
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    }
+
+    return 0;
+}
